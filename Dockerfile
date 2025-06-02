@@ -1,6 +1,6 @@
 ARG PYTHON_VERSION="3.10.17"
 
-FROM ghcr.io/astral-sh/uv:python${PYTHON_VERSION%.*}-bookworm-slim as build
+FROM ghcr.io/astral-sh/uv:python${PYTHON_VERSION%.*}-bookworm-slim AS build
 
 ENV UV_LINK_MODE=copy \
     UV_COMPILE_BYTECODE=1 \
@@ -14,7 +14,7 @@ COPY ./uv.lock /app
 RUN --mount=type=cache,target=/root/.cache \
     set -ex && \
     cd /app && \
-    uv sync --frozen --no-install-pyproject
+    uv sync --frozen --no-install-project
 
 COPY ./bot /app
 
