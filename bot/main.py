@@ -83,7 +83,8 @@ async def new_ctf(
     await guild.create_text_channel(
         name=discord_channel_name,
         category=category_obj,
-        reason="New CTF channel created by bot command"
+        reason="New CTF channel created by bot command",
+        position=0
     )
     await interaction.response.send_message(f"✅Created channel `{ctf_name}` in category `{display_category}`.", ephemeral=True)
     
@@ -126,6 +127,7 @@ async def new_chal(
             name=thread_title,
             type=discord.ChannelType.public_thread,
             reason="New challenge thread created by bot command",
+            auto_archive_duration=10080
         )
         created_count += 1
     
