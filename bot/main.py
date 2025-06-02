@@ -27,11 +27,6 @@ class MyClient(discord.Client):
         super().__init__(intents=intents)
         self.tree = app_commands.CommandTree(self)
 
-    async def setup_hook(self):
-        guild = discord.Object(id=config.GUILD_ID) if config.GUILD_ID else None
-        await self.tree.sync(guild=guild)
-        logger.info("Command tree synced.")
-
 
 intents = discord.Intents.default()
 intents.message_content = True
@@ -262,6 +257,10 @@ async def on_ready():
     logging.basicConfig(level=logging.INFO, force=True)
     logger.info(f"Logged in as {client.user} (ID: {client.user.id})")
     await client.change_presence(activity=discord.Game(name="koon"))
+    
+    guild = discord.Object(id=config.GUILD_ID) if config.GUILD_ID else None
+    await client.tree.sync(guild=guild)
+    logger.info("Command tree synced successfully.")
 
 
 if __name__ == "__main__":
