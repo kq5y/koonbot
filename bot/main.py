@@ -19,6 +19,7 @@ class Categories(enum.Enum):
     blockchain = "blockchain"
     osint = "osint"
     ppc = "ppc"
+    other = "other"
 
 
 class MyClient(discord.Client):
