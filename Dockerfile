@@ -16,7 +16,7 @@ RUN --mount=type=cache,target=/root/.cache \
     cd /app && \
     uv sync --frozen --no-install-project
 
-COPY ./bot /app
+COPY ./bot /app/bot
 
 FROM python:${PYTHON_VERSION}-slim-bookworm
 
