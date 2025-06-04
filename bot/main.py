@@ -254,6 +254,13 @@ async def unend_ctf(
     await interaction.response.send_message(f"✅Restored CTF channel `{channel.name}`.", ephemeral=True)
 
 
+@client.tree.command(name="koon")
+async def koon(
+    interaction: discord.Interaction
+):
+    await interaction.response.send_message("koon", ephemeral=True)
+
+
 @client.event
 async def on_ready():
     logging.basicConfig(level=logging.INFO, force=True)
