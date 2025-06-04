@@ -56,7 +56,7 @@ async def new_ctf(
 ):
     guild = interaction.guild
     if guild is None:
-        await interaction.response.send_message("😡Run it in the server.", ephemeral=True)
+        await interaction.response.send_message("😡 Run it in the server.", ephemeral=True)
         return
     
     if not category_name:
@@ -78,7 +78,7 @@ async def new_ctf(
     discord_channel_name = f"🆙{sanitized_ctf}"
     existing_channel = discord.utils.get(category_obj.text_channels, name=discord_channel_name)
     if existing_channel:
-        await interaction.response.send_message(f"😡Channel `{ctf_name}` already exists in category `{display_category}`.", ephemeral=True)
+        await interaction.response.send_message(f"😡 Channel `{ctf_name}` already exists in category `{display_category}`.", ephemeral=True)
         return
     
     await guild.create_text_channel(
@@ -87,7 +87,7 @@ async def new_ctf(
         reason="New CTF channel created by bot command",
         position=0
     )
-    await interaction.response.send_message(f"✅Created channel `{ctf_name}` in category `{display_category}`.", ephemeral=True)
+    await interaction.response.send_message(f"✅ Created channel `{ctf_name}` in category `{display_category}`.", ephemeral=True)
     
 
 @client.tree.command(name="new-chal", description="Create a new challenge thread in a CTF channel")
@@ -102,17 +102,17 @@ async def new_chal(
 ):
     channel = interaction.channel
     if not isinstance(channel, discord.TextChannel):
-        await interaction.response.send_message("😡This command can only be used in a text channel.", ephemeral=True)
+        await interaction.response.send_message("😡 This command can only be used in a text channel.", ephemeral=True)
         return
     
-    if not is_ctf_channel(channel):
-        await interaction.response.send_message("😡This command can only be used in a CTF channel.", ephemeral=True)
-        return
+    #if not is_ctf_channel(channel):
+    #    await interaction.response.send_message("😡 This command can only be used in a CTF channel.", ephemeral=True)
+    #    return
     
     name_list = [challenge_name_1, challenge_name_2, challenge_name_3, challenge_name_4, challenge_name_5]
     name_list = [name for name in name_list if name]
     if not name_list:
-        await interaction.response.send_message("😡You must provide at least one challenge name.", ephemeral=True)
+        await interaction.response.send_message("😡 You must provide at least one challenge name.", ephemeral=True)
         return
     
     created_count = 0
@@ -121,7 +121,7 @@ async def new_chal(
         thread_title = f"{category.value}: {name}"
         existing = discord.utils.get(channel.threads, name=thread_title)
         if existing:
-            response_messages.append(f"😡Thread `{thread_title}` already exists.")
+            response_messages.append(f"😡 Thread `{thread_title}` already exists.")
             continue
 
         await channel.create_thread(
@@ -133,9 +133,9 @@ async def new_chal(
         created_count += 1
     
     if created_count == 0:
-        response_messages.append("😡No new threads were created. All provided names already exist.")
+        response_messages.append("😡 No new threads were created. All provided names already exist.")
     else:
-        response_messages.append(f"✅Created {created_count} new challenge threads.")
+        response_messages.append(f"✅ Created {created_count} new challenge threads.")
     await interaction.response.send_message("\n".join(response_messages), ephemeral=True)
     
 
@@ -146,16 +146,16 @@ async def rename_chal(
 ):
     thread = interaction.channel
     if not isinstance(thread, discord.Thread):
-        await interaction.response.send_message("😡This command can only be used in a thread.", ephemeral=True)
+        await interaction.response.send_message("😡 This command can only be used in a thread.", ephemeral=True)
         return
     
-    if not is_ctf_thread(thread):
-        await interaction.response.send_message("😡This command can only be used in a CTF thread.", ephemeral=True)
-        return
+    #if not is_ctf_thread(thread):
+    #    await interaction.response.send_message("😡 This command can only be used in a CTF thread.", ephemeral=True)
+    #    return
     
     sanitized_name = utils.sanitize_name(new_name)
     if not sanitized_name:
-        await interaction.response.send_message("😡Invalid name provided.", ephemeral=True)
+        await interaction.response.send_message("😡 Invalid name provided.", ephemeral=True)
         return
     
     category_name = thread.name.split(":")[0].strip()
@@ -163,14 +163,14 @@ async def rename_chal(
 
     existing_thread = discord.utils.get(thread.parent.threads, name=new_thread_title)
     if existing_thread and existing_thread.id != thread.id:
-        await interaction.response.send_message(f"😡A thread with the name `{sanitized_name}` already exists.", ephemeral=True)
+        await interaction.response.send_message(f"😡 A thread with the name `{sanitized_name}` already exists.", ephemeral=True)
         return
     if thread.name == new_thread_title:
-        await interaction.response.send_message("😡The thread is already named that.", ephemeral=True)
+        await interaction.response.send_message("😡 The thread is already named that.", ephemeral=True)
         return
     
     await thread.edit(name=existing_thread, reason="Challenge thread renamed by bot command")
-    await interaction.response.send_message(f"✅Renamed thread to `{sanitized_name}`.", ephemeral=True)
+    await interaction.response.send_message(f"✅ Renamed thread to `{sanitized_name}`.", ephemeral=True)
 
 
 @client.tree.command(name="solved", description="Mark a challenge as solved")
@@ -179,21 +179,22 @@ async def solved(
 ):
     thread = interaction.channel
     if not isinstance(thread, discord.Thread):
-        await interaction.response.send_message("😡This command can only be used in a thread.", ephemeral=True)
+        await interaction.response.send_message("😡 This command can only be used in a thread.", ephemeral=True)
         return
     
-    if not is_ctf_thread(thread):
-        await interaction.response.send_message("😡This command can only be used in a CTF thread.", ephemeral=True)
-        return
+    #if not is_ctf_thread(thread):
+    #    await interaction.response.send_message("😡 This command can only be used in a CTF thread.", ephemeral=True)
+    #    return
     
     current_name = thread.name
-    if current_name.startswith("🚩"):
-        await interaction.response.send_message("😡This challenge is already marked as solved.", ephemeral=True)
+    if current_name.startswith("🚩") or current_name.startswith("🏴"):
+        await interaction.response.send_message("😡 This challenge is already marked as solved.", ephemeral=True)
         return
     
-    new_name = f"🚩 {current_name}"
-    await thread.edit(name=new_name, reason="Challenge marked as solved by bot command")
-    await interaction.response.send_message(f"✅Marked thread `{current_name}` as solved.", ephemeral=True)
+    is_upsolved = not is_ctf_thread(thread)
+    new_name = f"🏴 {current_name}" if is_upsolved else f"🚩 {current_name}"
+    await thread.edit(name=new_name, reason=f"Challenge marked as {"upsolved" if is_upsolved else "solved"} by bot command")
+    await interaction.response.send_message(f"✅ Marked thread `{current_name}` as {"upsolved" if is_upsolved else "solved"}.", ephemeral=True)
 
 
 @client.tree.command(name="unsolved", description="Unmark a challenge as solved")
@@ -202,21 +203,22 @@ async def unsolved(
 ):
     thread = interaction.channel
     if not isinstance(thread, discord.Thread):
-        await interaction.response.send_message("😡This command can only be used in a thread.", ephemeral=True)
+        await interaction.response.send_message("😡 This command can only be used in a thread.", ephemeral=True)
         return
     
-    if not is_ctf_thread(thread):
-        await interaction.response.send_message("😡This command can only be used in a CTF thread.", ephemeral=True)
-        return
+    #if not is_ctf_thread(thread):
+    #    await interaction.response.send_message("😡 This command can only be used in a CTF thread.", ephemeral=True)
+    #    return
     
     current_name = thread.name
-    if not current_name.startswith("🚩"):
-        await interaction.response.send_message("😡This challenge is not marked as solved.", ephemeral=True)
+    if not (current_name.startswith("🚩") or current_name.startswith("🏴")):
+        await interaction.response.send_message("😡 This challenge is not marked as solved.", ephemeral=True)
         return
     
-    new_name = current_name.replace("🚩 ", "", 1)
-    await thread.edit(name=new_name, reason="Challenge unmarked as solved by bot command")
-    await interaction.response.send_message(f"✅Unmarked thread `{current_name}` as unsolved.", ephemeral=True)
+    is_upsolved = not is_ctf_thread(thread)
+    new_name = current_name.replace(("🏴" if is_upsolved else "🚩") + " ", "", 1)
+    await thread.edit(name=new_name, reason=f"Challenge unmarked as {"upsolved" if is_upsolved else "solved"} by bot command")
+    await interaction.response.send_message(f"✅ Unmarked thread `{current_name}` as unsolved.", ephemeral=True)
 
 
 @client.tree.command(name="end-ctf", description="End a CTF and archive its channel")
@@ -225,16 +227,16 @@ async def end_ctf(
 ):
     channel = interaction.channel
     if not isinstance(channel, discord.TextChannel):
-        await interaction.response.send_message("😡This command can only be used in a text channel.", ephemeral=True)
+        await interaction.response.send_message("😡 This command can only be used in a text channel.", ephemeral=True)
         return
     
     if not is_ctf_channel(channel):
-        await interaction.response.send_message("😡This command can only be used in a CTF channel.", ephemeral=True)
+        await interaction.response.send_message("😡 This command can only be used in a CTF channel.", ephemeral=True)
         return
     
     new_name = channel.name.replace("🆙", "", 1)
     await channel.edit(name=new_name, reason="CTF channel ended by bot command")
-    await interaction.response.send_message(f"✅Ended CTF channel `{channel.name}`.", ephemeral=True)
+    await interaction.response.send_message(f"✅ Ended CTF channel `{channel.name}`.", ephemeral=True)
 
 
 @client.tree.command(name="unend-ctf", description="Unend a CTF and restore its channel")
@@ -243,16 +245,16 @@ async def unend_ctf(
 ):
     channel = interaction.channel
     if not isinstance(channel, discord.TextChannel):
-        await interaction.response.send_message("😡This command can only be used in a text channel.", ephemeral=True)
+        await interaction.response.send_message("😡 This command can only be used in a text channel.", ephemeral=True)
         return
     
     if is_ctf_channel(channel):
-        await interaction.response.send_message("😡This channel is already a CTF channel.", ephemeral=True)
+        await interaction.response.send_message("😡 This channel is already a CTF channel.", ephemeral=True)
         return
     
     new_name = f"🆙{channel.name}"
     await channel.edit(name=new_name, reason="CTF channel restored by bot command")
-    await interaction.response.send_message(f"✅Restored CTF channel `{channel.name}`.", ephemeral=True)
+    await interaction.response.send_message(f"✅ Restored CTF channel `{channel.name}`.", ephemeral=True)
 
 
 @client.tree.command(name="koon")
