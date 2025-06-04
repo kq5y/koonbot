@@ -18,6 +18,7 @@ class Categories(enum.Enum):
     misc = "misc"
     blockchain = "blockchain"
     osint = "osint"
+    ai = "ai"
     ppc = "ppc"
     other = "other"
 
