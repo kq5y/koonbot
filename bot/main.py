@@ -192,9 +192,10 @@ async def solved(
         return
     
     is_upsolved = not is_ctf_thread(thread)
+    solve_str = "upsolved" if is_upsolved else "solved"
     new_name = f"🏴 {current_name}" if is_upsolved else f"🚩 {current_name}"
-    await thread.edit(name=new_name, reason=f"Challenge marked as {"upsolved" if is_upsolved else "solved"} by bot command")
-    await interaction.response.send_message(f"✅ Marked thread `{current_name}` as {"upsolved" if is_upsolved else "solved"}.", ephemeral=True)
+    await thread.edit(name=new_name, reason=f"Challenge marked as {solve_str} by bot command")
+    await interaction.response.send_message(f"✅ Marked thread `{current_name}` as {solve_str}.", ephemeral=True)
 
 
 @client.tree.command(name="unsolved", description="Unmark a challenge as solved")
@@ -217,7 +218,8 @@ async def unsolved(
     
     is_upsolved = not is_ctf_thread(thread)
     new_name = current_name.replace(("🏴" if is_upsolved else "🚩") + " ", "", 1)
-    await thread.edit(name=new_name, reason=f"Challenge unmarked as {"upsolved" if is_upsolved else "solved"} by bot command")
+    solve_str = "upsolved" if is_upsolved else "solved"
+    await thread.edit(name=new_name, reason=f"Challenge unmarked as {solve_str} by bot command")
     await interaction.response.send_message(f"✅ Unmarked thread `{current_name}` as unsolved.", ephemeral=True)
 
 
